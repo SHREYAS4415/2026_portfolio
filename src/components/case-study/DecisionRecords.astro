@@ -1,0 +1,45 @@
+---
+import { decisions } from "../../data/creddinv";
+import FailureFlow from "../figures/FailureFlow.astro";
+---
+
+<div class="decisions">
+  {decisions.map((record, index) => (
+    <article id={record.id}>
+      <div class="record-heading">
+        <span class="index">ADR / 0{index + 1}</span>
+        <h3>{record.title}</h3>
+      </div>
+      <dl>
+        {(
+          [
+            "constraint",
+            "decision",
+            "why",
+            "tradeoff",
+            "consequence",
+            "evidence",
+          ] as const
+        ).map((key) => (
+          <div>
+            <dt>{key === "consequence" ? "System consequence" : key}</dt>
+            <dd>{record[key]}</dd>
+          </div>
+        ))}
+      </dl>
+      {record.id === "identity" && (
+        <div class="identity-notes">
+          <p class="eyebrow">DIFFERENTIATED JOURNEYS</p>
+          <p>Indian · NRI · International</p>
+          <p class="eyebrow">PROVIDER / VALIDATION CONCEPTS</p>
+          <p>DigiLocker · PAN validation · Didit</p>
+          <small>
+            Exact mapping is evidence pending. Provider return is not
+            automatically authoritative.
+          </small>
+        </div>
+      )}
+      {record.id === "failure" && <FailureFlow />}
+    </article>
+  ))}
+</div>

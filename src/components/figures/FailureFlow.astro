@@ -1,0 +1,24 @@
+---
+const layers = [
+  "UI",
+  "BLoC",
+  "Use Case",
+  "Repository",
+  "NetworkGuard",
+  "Remote Data Source",
+  "API",
+];
+---
+
+<figure class="failure-figure">
+  <ol class="flow">
+    {layers.map((layer) => (
+      <li>{layer}</li>
+    ))}
+  </ol>
+  <figcaption>
+    Failure propagation: Either&lt;Failure, T&gt; carries explicit failure
+    results. FailureMapper translates where needed; existing Failure instances
+    retain their meaning.
+  </figcaption>
+</figure>

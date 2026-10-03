@@ -1,0 +1,95 @@
+---
+import AssetSlot from "../ui/AssetSlot.astro";
+import Metrics from "../ui/Metrics.astro";
+---
+
+<section id="work" class="dark flagship">
+  <div class="wrap">
+    <div class="section-top">
+      <p class="eyebrow">SELECTED WORK / FLAGSHIP</p>
+      <span class="status">
+        <i aria-hidden="true"></i> PRODUCTION · LIVE
+      </span>
+    </div>
+    <div class="flagship-heading">
+      <h2>Creddinv v2.0</h2>
+      <p>Product to production.</p>
+    </div>
+    <div class="flagship-intro">
+      <p>
+        A fintech mobile product presented through its product journeys,
+        architectural reasoning and production delivery.
+      </p>
+      <a class="text-link" href="/work/creddinv-v2">
+        Explore case study <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+    <AssetSlot
+      name="creddinv-device-group"
+      label="Creddinv product visual"
+      alt="Creddinv v2.0 product interface showing portfolio, live campaigns and wealth experiences."
+      large
+    />
+    <Metrics compact />
+  </div>
+</section>
+
+<script>
+  import { setupMetricGroup, tickScaleGroup } from "../../scripts/motion";
+
+  let cleanupFlagshipMotion = () => {};
+
+  const initializeFlagshipMotion = () => {
+    cleanupFlagshipMotion();
+
+    const metricsEl = document.querySelector<HTMLElement>(".flagship .metrics");
+    if (!metricsEl) return;
+
+    const group = setupMetricGroup(metricsEl, true);
+    if (!group) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reducedMotion) {
+      metricsEl.classList.add("motion-reduced", "is-visible");
+      group.values.forEach((m) => {
+        if (m.el) m.el.textContent = m.format(m.val);
+      });
+      return;
+    }
+
+    metricsEl.classList.add("is-animated");
+    metricsEl.setAttribute("data-animate-metrics", "true");
+
+    let frame = 0;
+
+    const update = (now?: number) => {
+      frame = 0;
+      const viewportHeight = window.innerHeight;
+      const nowMs = now || performance.now();
+
+      if (tickScaleGroup(group, viewportHeight, nowMs)) {
+        frame = window.requestAnimationFrame(update);
+      }
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    update();
+
+    cleanupFlagshipMotion = () => {
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  };
+
+  initializeFlagshipMotion();
+  document.addEventListener("astro:page-load", initializeFlagshipMotion);
+</script>

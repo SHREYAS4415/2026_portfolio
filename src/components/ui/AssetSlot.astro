@@ -1,0 +1,39 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+interface Props {
+  name: string;
+  label: string;
+  alt?: string;
+  large?: boolean;
+}
+const { name, label, alt = label, large = false } = Astro.props;
+const assets = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/creddinv/*.{png,jpg,jpeg,webp,avif}",
+  { eager: true },
+);
+const match = Object.entries(assets).find(
+  ([path]) =>
+    path
+      .split("/")
+      .pop()
+      ?.replace(/\.[^.]+$/, "") === name,
+);
+---
+
+<figure class:list={["asset-slot", { large }]}>
+  {match ? (
+    <Image src={match[1].default} alt={alt} loading="lazy" />
+  ) : (
+    <div class="asset-placeholder">
+      <span class="asset-mark" aria-hidden="true">
+        ＋
+      </span>
+      <span>{label}</span>
+      <small>Product evidence · image to be added</small>
+    </div>
+  )}
+  <figcaption>
+    {large ? "Portfolio / Live Campaigns / Wealth by Creddinv" : label}
+  </figcaption>
+</figure>

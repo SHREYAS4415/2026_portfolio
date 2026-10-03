@@ -1,0 +1,25 @@
+---
+interface Props {
+  href: string | null;
+  label: string;
+  primary?: boolean;
+}
+const { href, label, primary = false } = Astro.props;
+const opensNewTab =
+  href?.startsWith("https://") || href?.toLowerCase().endsWith(".pdf");
+---
+
+{href ? (
+  <a
+    class:list={["external", { button: primary }]}
+    href={href}
+    target={opensNewTab ? "_blank" : undefined}
+    rel={opensNewTab ? "noopener noreferrer" : undefined}
+  >
+    {label} <span aria-hidden="true">↗</span>
+  </a>
+) : (
+  <span class:list={["external", "unavailable", { button: primary }]}>
+    {label} <small>Coming soon</small>
+  </span>
+)}

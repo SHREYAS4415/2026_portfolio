@@ -1,0 +1,45 @@
+---
+import { homepageStories as stories } from "../../data/portfolio";
+---
+
+<section class="wrap section">
+  <div class="section-heading">
+    <p class="eyebrow">04 / ARCHITECTURE STORIES</p>
+    <h2>
+      Decisions behind
+      <br />
+      the product.
+    </h2>
+  </div>
+  <div class="stories">
+    {stories.map((story, index) => (
+      <article>
+        <div class="story-title">
+          <span class="index">0{index + 1}</span>
+          <h3>{story.title}</h3>
+        </div>
+        <dl>
+          <div>
+            <dt>Problem</dt>
+            <dd>{story.problem}</dd>
+          </div>
+          <div>
+            <dt>Decision</dt>
+            <dd>{story.decision}</dd>
+          </div>
+          <div>
+            <dt>System consequence</dt>
+            <dd>{story.consequence}</dd>
+          </div>
+          <div>
+            <dt>Evidence / status</dt>
+            <dd>{story.evidence}</dd>
+          </div>
+        </dl>
+        <a class="text-link" href={`/work/creddinv-v2#${story.id}`}>
+          Explore story <span aria-hidden="true">→</span>
+        </a>
+      </article>
+    ))}
+  </div>
+</section>

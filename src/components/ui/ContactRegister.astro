@@ -1,0 +1,150 @@
+---
+interface Props {
+  stacked?: boolean;
+}
+const { stacked = false } = Astro.props;
+---
+
+<dl class:list={["contact-register", { stacked }]}>
+  <div class="contact-entry">
+    <dt>EMAIL</dt>
+    <dd>
+      <a
+        class="contact-action"
+        href="mailto:shreyasym4415@gmail.com"
+        aria-label="Email Shreyas at shreyasym4415@gmail.com"
+      >
+        shreyasym4415@gmail.com <span aria-hidden="true">↗</span>
+      </a>
+    </dd>
+  </div>
+  <div class="contact-entry">
+    <dt>LINKEDIN</dt>
+    <dd>
+      <a
+        class="contact-action"
+        href="https://www.linkedin.com/in/shreyas-y-m-34a121215/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="View Shreyas Y M’s LinkedIn profile (opens in a new tab)"
+      >
+        View profile <span aria-hidden="true">↗</span>
+      </a>
+    </dd>
+  </div>
+  <div class="contact-entry">
+    <dt>RESUME</dt>
+    <dd>
+      <a
+        class="contact-action"
+        href="/resume/Shreyas_YM_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open Shreyas Y M’s résumé PDF in a new tab"
+      >
+        View résumé <span aria-hidden="true">↗</span>
+      </a>
+    </dd>
+  </div>
+</dl>
+
+<style>
+  .contact-register {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    margin-top: 30px;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+  .contact-entry {
+    min-width: 0;
+    padding-inline: 24px;
+  }
+  .contact-entry dt {
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .contact-entry dd {
+    margin: 10px 0 0;
+  }
+  .contact-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 18px;
+    line-height: 1.4;
+    transition: color 170ms ease-out;
+  }
+  .contact-action span {
+    transition: transform 170ms ease-out;
+  }
+  .contact-action:hover {
+    color: var(--teal);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .contact-action:hover span {
+    transform: translate(2px, -2px);
+  }
+  .contact-action:focus-visible {
+    outline: 3px solid #339f91;
+    outline-offset: 5px;
+  }
+  .contact-unavailable {
+    font-size: 17px;
+    line-height: 1.4;
+    padding-block: 10px;
+    color: var(--muted);
+  }
+  @media (max-width: 1000px) {
+    .contact-register {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 700px) {
+    .contact-register {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 0;
+      padding-top: 0;
+    }
+    .contact-entry {
+      border-top: 1px solid var(--rule);
+      padding: 22px 0;
+    }
+  }
+  .contact-register.stacked {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 0;
+    border-top: 0;
+    padding-top: 0;
+  }
+  .stacked .contact-entry {
+    padding: 16px 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .stacked .contact-action {
+    display: inline-block;
+    max-width: 100%;
+    padding-block: 8px;
+    overflow-wrap: anywhere;
+  }
+  .stacked .contact-action span {
+    display: inline-block;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contact-action,
+    .contact-action span {
+      transition: none;
+    }
+    .contact-action:hover span {
+      transform: none;
+    }
+  }
+</style>

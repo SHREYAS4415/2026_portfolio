@@ -1,0 +1,51 @@
+---
+import { links } from "../../data/portfolio";
+import ExternalLink from "../ui/ExternalLink.astro";
+import ContactRegister from "../ui/ContactRegister.astro";
+import WorkContact from "../case-study/WorkContact.astro";
+interface Props {
+  workClosing?: boolean;
+  useContactRegister?: boolean;
+}
+const { useContactRegister = false, workClosing = false } = Astro.props;
+---
+
+<footer
+  id="contact"
+  class:list={["contact", "wrap", { "work-closing": workClosing }]}
+>
+  {workClosing ? (
+    <WorkContact />
+  ) : (
+    <>
+      <p class="eyebrow">LET’S CONNECT</p>
+      <h2>
+        Discuss mobile systems
+        <br />
+        and architecture.
+      </h2>
+      <p>
+        For mobile architecture opportunities, engineering leadership
+        conversations and professional connections.
+      </p>
+      {useContactRegister ? (
+        <ContactRegister />
+      ) : (
+        <div class="actions">
+          <ExternalLink
+            href={links.email ? `mailto:${links.email}` : null}
+            label="Email Shreyas"
+            primary
+          />
+          <ExternalLink href={links.linkedin} label="LinkedIn" />
+          <ExternalLink href={links.resume} label="Resume" />
+        </div>
+      )}
+    </>
+  )}
+  <div class="footer-bottom">
+    <span>© {new Date().getFullYear()} Shreyas Y M</span>
+    <span>Product journeys. Systems thinking. Production.</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>

@@ -1,0 +1,29 @@
+---
+import { productMoments, concerns } from "../../data/creddinv";
+---
+
+<figure class="depth-figure">
+  <div>
+    <p class="eyebrow">PRODUCT SURFACE</p>
+    <ul class="moment-list">
+      {productMoments.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </div>
+  <div class="depth-divider">
+    <span aria-hidden="true">↓</span>
+    <p>Many journeys. Shared architectural concerns.</p>
+  </div>
+  <div>
+    <p class="eyebrow">SYSTEM DEPTH</p>
+    <ul class="concern-list">
+      {concerns.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </div>
+  <figcaption>
+    These concerns span product moments; this is not a one-to-one mapping.
+  </figcaption>
+</figure>

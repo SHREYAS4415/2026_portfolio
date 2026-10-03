@@ -1,0 +1,92 @@
+---
+import { architecturalLens } from "../../data/portfolio";
+const { concerns, statement } = architecturalLens;
+const statementWords = statement.split(" ");
+---
+
+<div class="architectural-lens">
+  <div class="lens-spread">
+    <div class="lens-thesis">
+      <slot name="thesis" />
+    </div>
+    <p class="lens-statement" data-scroll-statement>
+      {statementWords.map((word, index) => (
+        <>
+          <span data-reveal-word>{word}</span>
+          {index < statementWords.length - 1 ? " " : ""}
+        </>
+      ))}
+    </p>
+  </div>
+  <div class="lens-register">
+    <div class="lens-register-heading">
+      <h3 class="eyebrow">SYSTEM DEPTH</h3>
+      <span class="index">06 SHARED CONCERNS</span>
+    </div>
+    <ol class="lens-system-grid">
+      {concerns.map((concern, index) => (
+        <li>
+          <span class="index">0{index + 1}</span>
+          <span class="lens-concern-title">{concern}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
+
+<script>
+  const statement = document.querySelector<HTMLElement>(
+    "[data-scroll-statement]",
+  );
+  if (statement) {
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    const words = Array.from(
+      statement.querySelectorAll<HTMLElement>("[data-reveal-word]"),
+    );
+    let queued = false;
+    let nearViewport = false;
+    const update = () => {
+      queued = false;
+      statement.classList.toggle("is-revealing", !reducedMotion.matches);
+      if (reducedMotion.matches) return;
+      const top = statement.getBoundingClientRect().top;
+      const progress = Math.max(
+        0,
+        Math.min(1, (innerHeight * 0.78 - top) / (innerHeight * (0.78 - 0.42))),
+      );
+      words.forEach((word, index) => {
+        const reveal = Math.max(
+          0,
+          Math.min(1, progress * words.length - index),
+        );
+        word.style.setProperty("--word-progress", String(reveal));
+      });
+    };
+    const schedule = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    const syncListeners = () => {
+      if (nearViewport && !reducedMotion.matches) {
+        addEventListener("scroll", schedule, { passive: true });
+        addEventListener("resize", schedule);
+      } else {
+        removeEventListener("scroll", schedule);
+        removeEventListener("resize", schedule);
+      }
+      update();
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        nearViewport = entry.isIntersecting;
+        syncListeners();
+      },
+      { rootMargin: "20% 0px 20% 0px" },
+    );
+    observer.observe(statement);
+    reducedMotion.addEventListener("change", syncListeners);
+    update();
+  }
+</script>

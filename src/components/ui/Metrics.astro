@@ -1,0 +1,23 @@
+---
+import { metrics } from "../../data/creddinv";
+const { compact = false } = Astro.props;
+---
+
+<dl class="metrics" data-animate-metrics>
+  {metrics.map((metric) => (
+    <div class="metric-item">
+      <dt
+        class="metric-value"
+        data-metric-target={metric.target}
+        data-metric-format={metric.format}
+      >
+        {metric.value}
+      </dt>
+      <dd class="metric-label">{compact ? metric.short : metric.label}</dd>
+    </div>
+  ))}
+</dl>
+<p class="metric-note">
+  Product-level figures supplied for this portfolio. They do not attribute
+  product growth to individual contribution.
+</p>

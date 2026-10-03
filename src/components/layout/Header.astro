@@ -1,0 +1,164 @@
+---
+import { navigation, links } from "../../data/portfolio";
+const isWorkPage = Astro.url.pathname.startsWith("/work/");
+---
+
+<header class="persistent-header">
+  <div class="header-shell">
+    <div class="main-capsule">
+      <a class="header-identity" href="/">
+        Shreyas Y M
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="header-navigation"
+      >
+        Menu
+      </button>
+      <nav
+        id="header-navigation"
+        class="header-links"
+        aria-label="Main navigation"
+      >
+        {navigation.map((item) => (
+          <a
+            href={item.href}
+            aria-current={
+              isWorkPage && item.label === "Work" ? "page" : undefined
+            }
+          >
+            {item.label}
+          </a>
+        ))}
+        {links.resume ? (
+          <a
+            class="mobile-resume"
+            href={links.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Résumé <span aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <span
+            class="mobile-resume nav-disabled"
+            role="link"
+            aria-disabled="true"
+          >
+            Résumé
+          </span>
+        )}
+      </nav>
+    </div>
+    {links.resume ? (
+      <a
+        class="resume-capsule"
+        href={links.resume}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Résumé <span aria-hidden="true">↗</span>
+      </a>
+    ) : (
+      <span
+        class="resume-capsule nav-disabled"
+        role="link"
+        aria-disabled="true"
+      >
+        Résumé <span aria-hidden="true">↗</span>
+      </span>
+    )}
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".persistent-header");
+  const nav = header?.querySelector<HTMLElement>(".header-links");
+  const button = header?.querySelector<HTMLButtonElement>(".menu-toggle");
+  if (header && nav && button) {
+    const mobile = matchMedia("(max-width: 700px)");
+    const setOpen = (open: boolean, returnFocus = false) => {
+      header.classList.toggle("menu-open", open);
+      button.setAttribute("aria-expanded", String(open));
+      nav.inert = mobile.matches && !open;
+      if (returnFocus) button.focus({ preventScroll: true });
+    };
+    button.addEventListener("click", () =>
+      setOpen(button.getAttribute("aria-expanded") !== "true"),
+    );
+    header.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && header.classList.contains("menu-open"))
+        setOpen(false, true);
+    });
+    nav.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a") && mobile.matches)
+        setOpen(false, true);
+    });
+    document.addEventListener("click", (event) => {
+      if (
+        !header.contains(event.target as Node) &&
+        header.classList.contains("menu-open")
+      )
+        setOpen(false);
+    });
+    header.addEventListener("focusout", () => {
+      requestAnimationFrame(() => {
+        if (!header.contains(document.activeElement)) setOpen(false);
+      });
+    });
+    mobile.addEventListener("change", () => setOpen(false));
+    setOpen(false);
+    const anchors = Array.from(
+      nav.querySelectorAll<HTMLAnchorElement>('a[href*="#"]'),
+    );
+    const pageAnchor = anchors.find(
+      (anchor) => anchor.getAttribute("aria-current") === "page",
+    );
+    const sections = anchors
+      .map((anchor) => {
+        const url = new URL(anchor.href);
+        return {
+          anchor,
+          section:
+            url.pathname === location.pathname
+              ? document.getElementById(url.hash.slice(1))
+              : null,
+        };
+      })
+      .filter((item) => item.section !== null);
+    let queued = false;
+    const update = () => {
+      queued = false;
+      header.classList.toggle("is-scrolled", scrollY > 24);
+      let active: HTMLAnchorElement | undefined;
+      for (const { anchor, section } of sections) {
+        if (section!.getBoundingClientRect().top <= innerHeight * 0.35)
+          active = anchor;
+      }
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2)
+        active = sections.at(-1)?.anchor;
+      for (const anchor of anchors) {
+        const current =
+          anchor === active
+            ? "location"
+            : !active && anchor === pageAnchor
+              ? "page"
+              : null;
+        if (current) anchor.setAttribute("aria-current", current);
+        else anchor.removeAttribute("aria-current");
+      }
+    };
+    const schedule = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    addEventListener("scroll", schedule, { passive: true });
+    addEventListener("resize", schedule);
+    addEventListener("hashchange", schedule);
+    update();
+  }
+</script>
