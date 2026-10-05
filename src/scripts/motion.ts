@@ -37,7 +37,7 @@ export const setupMetricGroup = (
     const target = parseFloat(el.getAttribute("data-metric-target") || "0");
     const formatType = el.getAttribute("data-metric-format");
     let formatFn = (v: number) => Math.round(v).toString();
-    if (formatType === "installs") formatFn = (v) => Math.round(v) + "K+";
+    if (formatType === "installs") formatFn = (v) => "~" + Math.round(v) + "K";
     else if (formatType === "mau") formatFn = (v) => "~" + Math.round(v) + "K";
     else if (formatType === "rating") formatFn = (v) => v.toFixed(1) + "★+";
     return { el, val: target, format: formatFn, delay: i * 140 };

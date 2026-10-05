@@ -1,10 +1,10 @@
 export const metrics = [
   {
-    value: "35K+",
-    target: "35",
+    value: "~20K",
+    target: "20",
     format: "installs",
-    label: "Combined Android + iOS installs",
-    short: "installs",
+    label: "Combined Android + iOS downloads",
+    short: "downloads",
   },
   { 
     value: "~4K", 
