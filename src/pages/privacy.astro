@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Privacy and analytics preferences">
+  <section class="wrap">
+  <h1>Privacy and analytics preferences</h1>
+  <p>Optional Google Analytics measures visits, campaign links, portfolio interactions, and successful enquiries. Analytics is off until you allow it.</p>
+  <p>Netlify handles contact submissions so I can reply. Your name, email address, and message are excluded from Google Analytics. If you allow analytics, session identifiers accompany your submission so the verified enquiry can be attributed to the visit.</p>
+  <form data-analytics-preferences>
+    <p role="status"></p>
+    <button type="submit" value="granted">Allow analytics</button>
+    <button type="submit" value="denied">Decline analytics</button>
+  </form>
+  </section>
+</BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Header from "../components/layout/Header.astro";
+import AnalyticsConsent from "../components/layout/AnalyticsConsent.astro";
 import Footer from "../components/layout/Footer.astro";
 interface Props {
   title?: string;
@@ -25,6 +26,9 @@ const {
     <meta name="theme-color" content="#f4f2eb" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      import "../scripts/analytics";
+    </script>
   </head>
   <body id="top">
     <a class="skip-link" href="#main">
@@ -35,5 +39,6 @@ const {
       <slot />
     </main>
     <Footer useContactRegister={useContactRegister} workClosing={workClosing} />
+    <AnalyticsConsent />
   </body>
 </html>
