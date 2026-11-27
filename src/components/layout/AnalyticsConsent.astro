@@ -1,0 +1,51 @@
+<form class="analytics-consent" data-analytics-consent hidden aria-labelledby="analytics-consent-label">
+  <p id="analytics-consent-label">Allow optional analytics to help me understand how this portfolio is used?</p>
+  <div class="choices">
+    <button type="submit" value="granted">Accept</button>
+    <button type="submit" value="denied">Decline</button>
+  </div>
+  <p role="status"></p>
+</form>
+
+<style>
+  .analytics-consent {
+    position: fixed;
+    z-index: 50;
+    inset-inline-end: 1rem;
+    inset-block-end: max(1rem, env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    width: min(25rem, calc(100% - 2rem));
+    padding: 1rem;
+    border: 1px solid var(--rule, #726e65);
+    border-radius: 0.5rem;
+    background: #f4f2eb;
+    color: #26241f;
+  }
+
+  .analytics-consent p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .choices {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  button {
+    flex: 1;
+    min-height: 44px;
+    border: 1px solid currentColor;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+</style>
